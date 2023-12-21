@@ -24,7 +24,6 @@ namespace Finance.API.Controllers
         {
             try
             {
-                //TODO : Event update amount
                 logger.LogInformation($"--- Start function {nameof(AddTransaction)} ---");
 
                 if (string.IsNullOrEmpty(newTransactionDTO.Name))
@@ -49,8 +48,8 @@ namespace Finance.API.Controllers
             {
                 logger.LogInformation($"--- Start function {nameof(GetStoriesFinance)} ---");
 
-                if (pageNumber < 0)
-                    return BadRequest("Page number cannot be less than 0");
+                if (pageNumber < 1)
+                    return BadRequest("Page number cannot be less than 1");
 
                 var query = new GetFinancesForCurrentUserQuery(pageNumber);
                 var result = await Mediator.Send(query);
@@ -68,13 +67,11 @@ namespace Finance.API.Controllers
             }
         }
 
-        //TODO Dodac przycisk delete
         [HttpDelete("finance/deleteTransactionById/{idFinance}")]
         public async Task<IActionResult> DeleteTransactionById(long idFinance)
         {
             try
             {
-                //TODO Event copy to next table!
                 logger.LogInformation($"--- Start function {nameof(DeleteTransactionById)} ---");
 
                 if (idFinance < 1)
@@ -95,13 +92,14 @@ namespace Finance.API.Controllers
             }
         }
 
-        //Tutaj event resourcing trzeba skorzystac :)
         [HttpGet("account/balance")]
         public async Task<ActionResult<long>> GetAccountBalanceUser()
         {
             try
             {
                 logger.LogInformation($"--- Start function {nameof(GetAccountBalanceUser)} ---");
+
+                //TODO 
 
                 return null;
             }

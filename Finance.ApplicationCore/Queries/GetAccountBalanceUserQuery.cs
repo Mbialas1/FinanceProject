@@ -10,14 +10,14 @@ using System.Threading.Tasks;
 
 namespace Finance.ApplicationCore.Queries
 {
-    public record GetAccountBalanceUserQuery : IRequest<AccountUser>
+    public record GetAccountBalanceUserQuery : IRequest<decimal>
     {
         public long IdUser { get; init; }
 
         public GetAccountBalanceUserQuery(long idUser) => this.IdUser = idUser;
     }
 
-    public class GetAccountBalanceUserQueryHandler : IRequestHandler<GetAccountBalanceUserQuery, AccountUser>
+    public class GetAccountBalanceUserQueryHandler : IRequestHandler<GetAccountBalanceUserQuery, decimal>
     {
         private readonly IQueryAccountRepository repository;
         private readonly ILogger<GetAccountBalanceUserQueryHandler> logger;
@@ -28,11 +28,11 @@ namespace Finance.ApplicationCore.Queries
             this.logger = _logger;
         }
 
-        public async Task<AccountUser> Handle(GetAccountBalanceUserQuery request, CancellationToken cancellationToken)
+        public async Task<decimal> Handle(GetAccountBalanceUserQuery request, CancellationToken cancellationToken)
         {
             try
             {
-                AccountUser result = await repository.GetAccountUser(request.IdUser);
+                decimal result = await repository.GetAccountUser(request.IdUser);
 
                 logger.LogInformation($"Account get for user {request.IdUser} !");
 

@@ -21,6 +21,9 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssemblies(typeof(Program).Assembly);
 });
 
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("NazwaTwojegoLancuchaPolaczenia")));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

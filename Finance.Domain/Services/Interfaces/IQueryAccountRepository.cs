@@ -9,6 +9,6 @@ namespace Finance.Domain.Services.Interfaces
 {
     public interface IQueryAccountRepository
     {
-        Task<AccountUser> GetAccountUser(long accountId);
+        Task<decimal> GetAccountUser(long accountId);
     }
 }

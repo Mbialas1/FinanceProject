@@ -1,5 +1,7 @@
 ﻿using Finance.Domain.Models;
 using Finance.Domain.Services.Interfaces;
+using Finance.Infrastructure.EntityFramework;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +12,23 @@ namespace Finance.Infrastructure.Services.AccountService
 {
     public class QueryAccountRepository : IQueryAccountRepository
     {
-        public Task<AccountUser> GetAccountUser(long accountId)
+        public async Task<decimal> GetAccountUser(long accountId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using var context = new ApplicationDbContext();
+
+                var result = await context.AccountUsers
+                    .Where(user => user.Id == accountId)
+                    .Select(accountBalance => accountBalance.AccountBalance)
+                    .SingleOrDefaultAsync();
+
+                return result;
+            }
+            catch
+            {
+                throw;
+            }
         }
     }
 }
