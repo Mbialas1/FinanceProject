@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Finance.Domain.DTOs
+namespace Finance.Domain.Enums
 {
-    public class TransactionDTO
+    public enum CurrencyEnum
     {
+        PLN
     }
 }

@@ -8,5 +8,9 @@ namespace Finance.Domain.DTOs
 {
     public class NewTransactionDTO
     {
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string Amount { get; set; }
+        public string Curreny { get; set; }
     }
 }

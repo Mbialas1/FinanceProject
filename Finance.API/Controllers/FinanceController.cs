@@ -8,11 +8,11 @@ namespace Finance.API.Controllers
     [Route("[controller]")]
     public class FinanceController : ControllerBase
     {
-        private readonly IMediator mediator;
+        private readonly IMediator Mediator;
         //TODO Logi!
         public FinanceController(IMediator _mediator)
         {
-            this.mediator = _mediator;
+            this.Mediator = _mediator;
         }
 
         [HttpPost("finance/addTransaction")]
@@ -22,8 +22,9 @@ namespace Finance.API.Controllers
         }
 
         [HttpGet("finance/getFinancesUser")]
-        public async Task<ActionResult<IEnumerable<TransactionDTO>>> GetStoriesFinance()
+        public async Task<ActionResult<IEnumerable<ActiveTransactionDTO>>> GetStoriesFinance()
         {
+            //TODO : Add 2 tables active and deactvie transactions
             return null;
         }
 
