@@ -16,7 +16,7 @@ namespace Finance.API.Controllers
         }
 
         [HttpPost("finance/addTransaction")]
-        public async Task<IActionResult> AsddTransaction([FromBody] TransactionDTO financeDTO)
+        public async Task<IActionResult> AsddTransaction([FromBody] NewTransactionDTO newTransactionDTO)
         {
             return null;
         }
