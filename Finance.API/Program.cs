@@ -1,5 +1,6 @@
 using Finance.Domain.Services.Interfaces;
 using Finance.Infrastructure.Services;
+using Finance.Infrastructure.Services.AccountService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IQueryFinanceRepository, QueryFinanceRepository>();
 builder.Services.AddScoped<ICommandFinanceRepository, CommandFinanceRepository>();
+builder.Services.AddScoped<ICommandAccountRepository, CommandAccountRepository>();
+builder.Services.AddScoped<IQueryAccountRepository, QueryAccountRepository>();
 
 builder.Services.AddMediatR(cfg =>
 {

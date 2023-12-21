@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Finance.Domain.Services.Interfaces
 {
-    public interface IQueryFinanceRepository
+    public interface IQueryAccountRepository
     {
-        Task<IEnumerable<Transaction>> GetAllTransains(int pageSize);
+        Task<AccountUser> GetAccountUser(long accountId);
     }
 }

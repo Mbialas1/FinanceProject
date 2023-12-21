@@ -1,4 +1,7 @@
-﻿using Finance.Domain.DTOs;
+﻿using Finance.ApplicationCore.Commands;
+using Finance.ApplicationCore.Queries;
+using Finance.Domain.DTOs;
+using Finance.Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,37 +12,104 @@ namespace Finance.API.Controllers
     public class FinanceController : ControllerBase
     {
         private readonly IMediator Mediator;
-        //TODO Logi!
-        public FinanceController(IMediator _mediator)
+        private readonly ILogger<FinanceController> logger;
+        public FinanceController(IMediator _mediator, ILogger<FinanceController> logger)
         {
             this.Mediator = _mediator;
+            this.logger = logger;
         }
 
         [HttpPost("finance/addTransaction")]
-        public async Task<IActionResult> AsddTransaction([FromBody] NewTransactionDTO newTransactionDTO)
+        public async Task<IActionResult> AddTransaction([FromBody] NewTransactionDTO newTransactionDTO)
         {
-            return null;
+            try
+            {
+                //TODO : Event update amount
+                logger.LogInformation($"--- Start function {nameof(AddTransaction)} ---");
+
+                if (string.IsNullOrEmpty(newTransactionDTO.Name))
+                    return BadRequest("Name cannot be empty or null!");
+
+                var command = new AddTransactionCommand(newTransactionDTO);
+                var result = await Mediator.Send(command);
+
+                return Ok(result.Id);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($" -- Exception in function {nameof(AddTransaction)} more about : {ex} ---");
+                return BadRequest();
+            }
         }
 
-        [HttpGet("finance/getFinancesUser")]
-        public async Task<ActionResult<IEnumerable<ActiveTransactionDTO>>> GetStoriesFinance()
+        [HttpGet("finance/getFinancesUser/{pageNumber}")]
+        public async Task<ActionResult<IEnumerable<ActiveTransactionDTO>>> GetStoriesFinance(int pageNumber)
         {
-            //TODO : Add 2 tables active and deactvie transactions
-            return null;
+            try
+            {
+                logger.LogInformation($"--- Start function {nameof(GetStoriesFinance)} ---");
+
+                if (pageNumber < 0)
+                    return BadRequest("Page number cannot be less than 0");
+
+                var query = new GetFinancesForCurrentUserQuery(pageNumber);
+                var result = await Mediator.Send(query);
+
+                IList<ActiveTransactionDTO> activeTransactions = new List<ActiveTransactionDTO>();
+                foreach (Transaction transaction in result)
+                    activeTransactions.Add(new ActiveTransactionDTO(transaction));
+
+                return Ok(activeTransactions);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($" -- Exception in function {nameof(GetStoriesFinance)} more about : {ex} ---");
+                return BadRequest();
+            }
         }
 
         //TODO Dodac przycisk delete
         [HttpDelete("finance/deleteTransactionById/{idFinance}")]
         public async Task<IActionResult> DeleteTransactionById(long idFinance)
         {
-            return null;
+            try
+            {
+                //TODO Event copy to next table!
+                logger.LogInformation($"--- Start function {nameof(DeleteTransactionById)} ---");
+
+                if (idFinance < 1)
+                    return BadRequest("ID finance cannot be less than 1");
+
+                var command = new DeleteTransactionByIdCommand(idFinance);
+                var result = await Mediator.Send(command);
+
+                if (result)
+                    return Ok();
+                else
+                    return BadRequest("Operation failed!");
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($" -- Exception in function {nameof(DeleteTransactionById)} more about : {ex} ---");
+                return BadRequest();
+            }
         }
 
         //Tutaj event resourcing trzeba skorzystac :)
         [HttpGet("account/balance")]
         public async Task<ActionResult<long>> GetAccountBalanceUser()
         {
-            return null;
+            try
+            {
+                logger.LogInformation($"--- Start function {nameof(GetAccountBalanceUser)} ---");
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($" -- Exception in function {nameof(GetAccountBalanceUser)} more about : {ex} ---");
+                return BadRequest();
+            }
         }
 
     }

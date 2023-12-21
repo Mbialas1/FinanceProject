@@ -1,5 +1,6 @@
 ﻿using Finance.ApplicationCore.Commands;
 using Finance.Domain.DTOs;
+using Finance.Domain.Models;
 using Finance.Domain.Services.Interfaces;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -9,7 +10,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Transactions;
 
 namespace Finance.ApplicationCore.Queries
 {
