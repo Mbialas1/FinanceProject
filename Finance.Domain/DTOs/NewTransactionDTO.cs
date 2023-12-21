@@ -11,6 +11,6 @@ namespace Finance.Domain.DTOs
         public string Name { get; set; }
         public string Description { get; set; }
         public string Amount { get; set; }
-        public string Curreny { get; set; }
+        public string Currency { get; set; }
     }
 }
