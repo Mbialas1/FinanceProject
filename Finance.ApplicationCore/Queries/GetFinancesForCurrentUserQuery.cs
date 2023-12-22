@@ -35,7 +35,7 @@ namespace Finance.ApplicationCore.Queries
         {
             try
             {
-                IEnumerable<Transaction> transactions = await repository.GetAllTransains(request.page);
+                IEnumerable<Transaction> transactions = await repository.GetAllTransactions(request.page);
 
                 logger.LogInformation("Transactions list is ready!");
 

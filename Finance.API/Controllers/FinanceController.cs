@@ -93,15 +93,18 @@ namespace Finance.API.Controllers
         }
 
         [HttpGet("account/balance")]
-        public async Task<ActionResult<long>> GetAccountBalanceUser()
+        public async Task<ActionResult<string>> GetAccountBalanceUser()
         {
             try
             {
                 logger.LogInformation($"--- Start function {nameof(GetAccountBalanceUser)} ---");
 
-                //TODO 
+                long userId = 1; // TODO : For test. Exist only one user.
+                
+                var query = new GetAccountBalanceUserQuery(userId);
+                var result = await Mediator.Send(query);
 
-                return null;
+                return result.ToString();
             }
             catch (Exception ex)
             {
