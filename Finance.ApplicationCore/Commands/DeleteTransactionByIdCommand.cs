@@ -23,6 +23,7 @@ namespace Finance.ApplicationCore.Commands
     {
         private readonly ICommandFinanceRepository repository;
         private readonly ILogger<DeleteTransactionByIdCommandHandler> logger;
+        private static readonly object deleteLock = new object();
 
         public DeleteTransactionByIdCommandHandler(ICommandFinanceRepository commandFinanceRepository, ILogger<DeleteTransactionByIdCommandHandler> _logger)
         {
@@ -34,7 +35,11 @@ namespace Finance.ApplicationCore.Commands
         {
             try
             {
-                bool result = await repository.DeleteTranstacion(request.Id);
+                bool result = true;
+                lock (deleteLock)
+                {
+                    result = repository.DeleteTranstacion(request.Id).Result;
+                }
 
                 if(result)
                     logger.LogInformation($"Sucessfull delete transaction by id : {request.Id}");

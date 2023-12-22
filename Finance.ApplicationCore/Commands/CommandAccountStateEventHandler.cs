@@ -14,6 +14,7 @@ namespace Finance.ApplicationCore.Commands
     {
         private readonly ICommandAccountRepository repository;
         private readonly ILogger<CommandAccountStateEventHandler> logger;
+        private static readonly object Lock = new object();
         public CommandAccountStateEventHandler(ICommandAccountRepository _repository, ILogger<CommandAccountStateEventHandler> _logger)
         {
             this.repository = _repository;
@@ -24,7 +25,11 @@ namespace Finance.ApplicationCore.Commands
         {
             try
             {
-                await repository.UpdateAccountBalance(notification.AmountTransaction);
+                lock (Lock)
+                {
+                    repository.UpdateAccountBalance(notification.AmountTransaction);
+                }
+
                 logger.LogInformation($"Balanced account was update. Amount is {notification.AmountTransaction}. User id : 1 for test");
             }
             catch(Exception ex)
