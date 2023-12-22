@@ -1,3 +1,4 @@
+using AspNetCoreRateLimit;
 using Finance.Domain.Services.Interfaces;
 using Finance.Infrastructure.Services;
 using Finance.Infrastructure.Services.AccountService;
@@ -21,10 +22,17 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssemblies(typeof(Program).Assembly);
 });
 
+builder.Services.AddMemoryCache();
+builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateLimiting"));
+builder.Services.Configure<IpRateLimitPolicies>(builder.Configuration.GetSection("IpRateLimitPolicies"));
+builder.Services.AddInMemoryRateLimiting();
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("NazwaTwojegoLancuchaPolaczenia")));
 
 var app = builder.Build();
+
+app.UseIpRateLimiting();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
