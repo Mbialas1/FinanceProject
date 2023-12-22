@@ -8,5 +8,6 @@ namespace Finance.Domain.Services.Interfaces
 {
     public interface ICommandAccountRepository
     {
+        Task UpdateAccountBalance(decimal amount);
     }
 }

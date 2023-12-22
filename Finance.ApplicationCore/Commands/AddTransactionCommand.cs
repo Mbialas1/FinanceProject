@@ -1,4 +1,5 @@
-﻿using Finance.Domain.DTOs;
+﻿using Finance.ApplicationCore.Events;
+using Finance.Domain.DTOs;
 using Finance.Domain.Enums;
 using Finance.Domain.Models;
 using Finance.Domain.Services.Interfaces;
@@ -24,10 +25,12 @@ namespace Finance.ApplicationCore.Commands
     {
         private readonly ICommandFinanceRepository repository;
         private readonly ILogger<AddTransactionCommandHandler> logger;
-        public AddTransactionCommandHandler(ICommandFinanceRepository _repository, ILogger<AddTransactionCommandHandler> _logger)
+        private readonly IMediator mediator;
+        public AddTransactionCommandHandler(ICommandFinanceRepository _repository, ILogger<AddTransactionCommandHandler> _logger, IMediator _mediator)
         {
             this.repository = _repository;
             this.logger = _logger;
+            this.mediator = _mediator;  
         }
 
         public async Task<Transaction> Handle(AddTransactionCommand request, CancellationToken cancellationToken)
@@ -41,6 +44,8 @@ namespace Finance.ApplicationCore.Commands
                     logger.LogError($"Can't add new transaction to base. Name of new transaction : {request.TransactionDTO.Name}");
                     throw new ArgumentNullException("Can't add new transaction to base");
                 }
+
+                await mediator.Publish(new UpdateAccountStateEvent(transaction.Amount));
 
                 logger.LogInformation($"Add new transaction id : {transaction.Id}");
                 return transaction;
