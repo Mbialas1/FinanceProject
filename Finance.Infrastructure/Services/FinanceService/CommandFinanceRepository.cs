@@ -17,7 +17,7 @@ namespace Finance.Infrastructure.Services
         {
             try
             {
-                using var context = new ApplicationDbContext();
+                using var context = new ApplicationDbContext(null);
 
                 await context.Transactions.AddAsync(newTransaction);
                 await context.SaveChangesAsync();
@@ -39,15 +39,16 @@ namespace Finance.Infrastructure.Services
             //TODO Create another table for deleteTransactions and remove here from current table
             try
             {
-                using var context = new ApplicationDbContext();
+                return false;
+                //using var context = new ApplicationDbContext(null);
 
-                var transaction = await context.Transactions.FindAsync(idTransaction);
-                if (transaction is null)
-                    return false;
+                //var transaction = await context.Transactions.FindAsync(idTransaction);
+                //if (transaction is null)
+                //    return false;
 
-                transaction.DeletedDateTime = DateTime.UtcNow;
-                await context.SaveChangesAsync();
-                return true;
+                //transaction.DeletedDateTime = DateTime.UtcNow;
+                //await context.SaveChangesAsync();
+                //return true;
             }
             catch
             {

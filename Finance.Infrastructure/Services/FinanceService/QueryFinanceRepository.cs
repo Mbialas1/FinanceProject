@@ -24,16 +24,17 @@ namespace Finance.Infrastructure.Services
                 int pageSize = 5;
                 int startIndex = pageNumber == 1 ? 0 : pageNumber * pageSize;
 
-                using var context = new ApplicationDbContext();
+                return new List<Transaction>();
+                //using var context = new ApplicationDbContext(null);
 
-                var transactions = await context.Transactions
-                     .OrderBy(t => t.Id)
-                     .Where(trans => trans.DeletedDateTime == null)
-                     .Skip(startIndex)
-                     .Take(pageSize)
-                     .ToListAsync();
+                //var transactions = await context.Transactions
+                //     .OrderBy(t => t.Id)
+                //     .Where(trans => trans.DeletedDateTime == null)
+                //     .Skip(startIndex)
+                //     .Take(pageSize)
+                //     .ToListAsync();
 
-                return transactions;
+                //return transactions;
             }
             catch
             {

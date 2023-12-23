@@ -1,6 +1,7 @@
 ﻿using Finance.Domain.Enums;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ namespace Finance.Domain.Models
         public DateTime? DeletedDateTime { get; set; } = null;
         public decimal Amount { get; set; }
         public CurrencyEnum Currency { get; set; }
+        public AccountUser User { get; set; }
         public long UserId { get; set; }    
     }
 }

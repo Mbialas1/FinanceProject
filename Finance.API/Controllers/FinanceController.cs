@@ -4,6 +4,10 @@ using Finance.Domain.DTOs;
 using Finance.Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Finance.API.Controllers
 {
