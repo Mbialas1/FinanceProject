@@ -1,0 +1,12 @@
+.account-balance-container {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  .bold-textbox {
+    font-weight: bold;
+    padding: 5px;
+    width: 150px; 
+  }
+  

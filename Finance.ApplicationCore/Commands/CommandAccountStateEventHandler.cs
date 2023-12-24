@@ -14,7 +14,7 @@ namespace Finance.ApplicationCore.Commands
     {
         private readonly ICommandAccountRepository repository;
         private readonly ILogger<CommandAccountStateEventHandler> logger;
-        private static readonly object Lock = new object();
+        private static SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1, 1);
         public CommandAccountStateEventHandler(ICommandAccountRepository _repository, ILogger<CommandAccountStateEventHandler> _logger)
         {
             this.repository = _repository;
@@ -23,16 +23,14 @@ namespace Finance.ApplicationCore.Commands
 
         public async Task Handle(UpdateAccountStateEvent notification, CancellationToken cancellationToken)
         {
+            await semaphoreSlim.WaitAsync();
             try
             {
-                lock (Lock)
-                {
-                    repository.UpdateAccountBalance(notification.AmountTransaction);
-                }
+                await repository.UpdateAccountBalance(notification.AmountTransaction);
 
                 logger.LogInformation($"Balanced account was update. Amount is {notification.AmountTransaction}. User id : 1 for test");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 logger.LogError($"Error in handler: {nameof(CommandAccountStateEventHandler)}. Details : {ex}");
                 throw;

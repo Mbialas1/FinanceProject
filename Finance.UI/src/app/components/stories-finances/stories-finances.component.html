@@ -1,1 +1,30 @@
-<p>stories-finances works!</p>
+<div class="transactions-container">
+    <h2>Transaction List</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Amount</th>
+          <th>Currency</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let transaction of transactions">
+          <td>{{ transaction.id }}</td>
+          <td>{{ transaction.name }}</td>
+          <td>{{ transaction.description }}</td>
+          <td>{{ transaction.amount }}</td>
+          <td>{{ transaction.currency }}</td>
+          <td><button (click)="deleteTransaction(transaction.id)" class="delete-button">Delete</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="transactions.length === 0">
+      <p>No transactions available.</p>
+    </div>
+    <button *ngIf="hasMoreTransactions" class="more-transactions-button" (click)="onMoreTransactionsClick()">More transactions</button>
+  </div>
+  

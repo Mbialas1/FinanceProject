@@ -9,6 +9,6 @@ namespace Finance.Domain.Services.Interfaces
 {
     public interface IQueryFinanceRepository
     {
-        Task<IEnumerable<Transaction>> GetAllTransactions(int pageSize);
+        Task<IEnumerable<Transaction>> GetAllTransactions(int lastIndexID);
     }
 }

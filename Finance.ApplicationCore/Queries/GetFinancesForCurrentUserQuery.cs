@@ -15,10 +15,10 @@ namespace Finance.ApplicationCore.Queries
 {
     public record GetFinancesForCurrentUserQuery : IRequest<IEnumerable<Transaction>>
     {
-        public int page { get; init; }
+        public int LastIndexID { get; init; }
 
         public GetFinancesForCurrentUserQuery(int _page)
-            => this.page = _page;
+            => this.LastIndexID = _page;
     }
 
     public class GetFinancesForCurrentUserQueryHandler : IRequestHandler<GetFinancesForCurrentUserQuery, IEnumerable<Transaction>>
@@ -35,7 +35,7 @@ namespace Finance.ApplicationCore.Queries
         {
             try
             {
-                IEnumerable<Transaction> transactions = await repository.GetAllTransactions(request.page);
+                IEnumerable<Transaction> transactions = await repository.GetAllTransactions(request.LastIndexID);
 
                 logger.LogInformation("Transactions list is ready!");
 

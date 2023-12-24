@@ -12,25 +12,27 @@ namespace Finance.Infrastructure.Services.AccountService
 {
     public class CommandAccountRepository : ICommandAccountRepository
     {
-        public CommandAccountRepository()
+        private readonly ApplicationDbContext context;
+        public CommandAccountRepository(ApplicationDbContext _context)
         {
+            this.context = _context;
+
         }
         public async Task UpdateAccountBalance(decimal amount)
         {
             try
             {
-                long userId = 1; // Test user beacuse we dont have options/table for create new users.
-                //using var contexte = context.;
+                long userId = 1;
 
-                //var account = await context.AccountUsers
-                //    .Where(acc => acc.Id == userId)
-                //    .FirstOrDefaultAsync();
+                var account = await context.AccountUsers
+                    .Where(acc => acc.Id == userId)
+                    .FirstOrDefaultAsync();
 
-                //if (account == null)
-                //    throw new ArgumentNullException($"Cant find user with id {userId}");
+                if (account == null)
+                    throw new ArgumentNullException($"Cant find user with id {userId}");
 
-                //account.AccountBalance += amount;
-                //await context.SaveChangesAsync();
+                account.AccountBalance += amount;
+                await context.SaveChangesAsync();
             }
             catch
             {

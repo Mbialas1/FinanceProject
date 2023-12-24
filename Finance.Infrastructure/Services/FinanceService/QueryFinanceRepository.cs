@@ -12,29 +12,33 @@ namespace Finance.Infrastructure.Services
 {
     public class QueryFinanceRepository : IQueryFinanceRepository
     {
+        private readonly ApplicationDbContext context;
+
+        public QueryFinanceRepository(ApplicationDbContext _context)
+        {
+            this.context = _context;    
+        }
+
         /// <summary>
         /// Get only 5 transactions for tests
         /// </summary>
         /// <param name="pageNumber"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<Transaction>> GetAllTransactions(int pageNumber)
+        public async Task<IEnumerable<Transaction>> GetAllTransactions(int lastIndexID)
         {
             try
             {
+                int userId = 1; //Test user 
                 int pageSize = 5;
-                int startIndex = pageNumber == 1 ? 0 : pageNumber * pageSize;
+                int startIndex = lastIndexID == 1 ? 0 : lastIndexID;
 
-                return new List<Transaction>();
-                //using var context = new ApplicationDbContext(null);
+                var transactions = await context.Transactions
+                      .OrderBy(t => t.Id)
+                      .Where(trans => trans.DeletedDateTime == null && trans.Id > startIndex && trans.UserId == userId)
+                      .Take(pageSize)
+                      .ToListAsync();
 
-                //var transactions = await context.Transactions
-                //     .OrderBy(t => t.Id)
-                //     .Where(trans => trans.DeletedDateTime == null)
-                //     .Skip(startIndex)
-                //     .Take(pageSize)
-                //     .ToListAsync();
-
-                //return transactions;
+                return transactions;
             }
             catch
             {

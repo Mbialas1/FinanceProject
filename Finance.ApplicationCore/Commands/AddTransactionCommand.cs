@@ -63,7 +63,9 @@ namespace Finance.ApplicationCore.Commands
             {
                 Name = newTransactionDTO.Name,
                 Description = newTransactionDTO.Description,
-                CreatedDateTime = DateTime.UtcNow
+                CreatedDateTime = DateTime.UtcNow,
+                Amount = newTransactionDTO.Amount,
+                UserId = 1 //Test user
             };
 
             if (!Enum.TryParse(newTransactionDTO.Currency, out CurrencyEnum currencyEnum))
@@ -73,14 +75,6 @@ namespace Finance.ApplicationCore.Commands
             }
             else
                 transaction.Currency = currencyEnum;
-
-            if (!decimal.TryParse(newTransactionDTO.Amount, out decimal parseAmount))
-            {
-                logger.LogError($"Cannot parse amount : {newTransactionDTO.Amount} of task name : {transaction.Name}");
-                return null;
-            }
-            else
-                transaction.Amount = parseAmount;
 
             return transaction;
         }

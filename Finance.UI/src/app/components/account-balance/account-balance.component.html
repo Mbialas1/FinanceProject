@@ -1,1 +1,9 @@
-<p>account-balance works!</p>
+<div class="account-balance-container">
+    <h2>Account Balance</h2>
+    <div *ngIf="accountBalance !== undefined">
+      <input type="text" [value]="accountBalance" readonly class="bold-textbox" />
+    </div>
+    <div *ngIf="accountBalance === undefined">
+      <p>Loading...</p>
+    </div>
+  </div>

@@ -3,10 +3,16 @@ using Finance.ApplicationCore.Queries;
 using Finance.Domain.DTOs;
 using Finance.Domain.Models;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Finance.API.Controllers
@@ -17,12 +23,15 @@ namespace Finance.API.Controllers
     {
         private readonly IMediator Mediator;
         private readonly ILogger<FinanceController> logger;
-        public FinanceController(IMediator _mediator, ILogger<FinanceController> logger)
+        private readonly IConfiguration configuration;
+        public FinanceController(IMediator _mediator, ILogger<FinanceController> logger, IConfiguration _configuration)
         {
             this.Mediator = _mediator;
             this.logger = logger;
+            this.configuration = _configuration;    
         }
 
+        [Authorize]
         [HttpPost("finance/addTransaction")]
         public async Task<IActionResult> AddTransaction([FromBody] NewTransactionDTO newTransactionDTO)
         {
@@ -45,17 +54,18 @@ namespace Finance.API.Controllers
             }
         }
 
-        [HttpGet("finance/getFinancesUser/{pageNumber}")]
-        public async Task<ActionResult<IEnumerable<ActiveTransactionDTO>>> GetStoriesFinance(int pageNumber)
+        [Authorize]
+        [HttpGet("finance/getFinancesUser/{lastId}")]
+        public async Task<ActionResult<IEnumerable<ActiveTransactionDTO>>> GetStoriesFinance(int lastId)
         {
             try
             {
                 logger.LogInformation($"--- Start function {nameof(GetStoriesFinance)} ---");
 
-                if (pageNumber < 1)
+                if (lastId < 1)
                     return BadRequest("Page number cannot be less than 1");
 
-                var query = new GetFinancesForCurrentUserQuery(pageNumber);
+                var query = new GetFinancesForCurrentUserQuery(lastId);
                 var result = await Mediator.Send(query);
 
                 IList<ActiveTransactionDTO> activeTransactions = new List<ActiveTransactionDTO>();
@@ -71,6 +81,7 @@ namespace Finance.API.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("finance/deleteTransactionById/{idFinance}")]
         public async Task<IActionResult> DeleteTransactionById(long idFinance)
         {
@@ -96,6 +107,7 @@ namespace Finance.API.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("account/balance")]
         public async Task<ActionResult<string>> GetAccountBalanceUser()
         {
@@ -115,6 +127,30 @@ namespace Finance.API.Controllers
                 logger.LogError($" -- Exception in function {nameof(GetAccountBalanceUser)} more about : {ex} ---");
                 return BadRequest();
             }
+        }
+
+        //Authorization
+        [HttpPost("login")]
+        public async Task<IActionResult> Login()
+        {
+
+            var claims = new[]
+            {
+            new Claim(ClaimTypes.Name, "TestUser")
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:SecretKey"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                configuration["Jwt:Issuer"],
+                configuration["Jwt:Audience"],
+                claims,
+                expires: DateTime.Now.AddMinutes(120),
+                signingCredentials: creds
+            );
+
+            return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
         }
 
     }

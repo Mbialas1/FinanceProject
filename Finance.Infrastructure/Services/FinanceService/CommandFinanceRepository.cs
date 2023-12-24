@@ -13,12 +13,17 @@ namespace Finance.Infrastructure.Services
 {
     public class CommandFinanceRepository : ICommandFinanceRepository
     {
+        private readonly ApplicationDbContext context;
+
+        public CommandFinanceRepository(ApplicationDbContext _context)
+        {
+            this.context = _context;
+        }
+
         public async Task<Transaction> AddTranstacion(Transaction newTransaction)
         {
             try
             {
-                using var context = new ApplicationDbContext(null);
-
                 await context.Transactions.AddAsync(newTransaction);
                 await context.SaveChangesAsync();
 
@@ -39,16 +44,13 @@ namespace Finance.Infrastructure.Services
             //TODO Create another table for deleteTransactions and remove here from current table
             try
             {
-                return false;
-                //using var context = new ApplicationDbContext(null);
+                var transaction = await context.Transactions.FindAsync(idTransaction);
+                if (transaction is null)
+                    return false;
 
-                //var transaction = await context.Transactions.FindAsync(idTransaction);
-                //if (transaction is null)
-                //    return false;
-
-                //transaction.DeletedDateTime = DateTime.UtcNow;
-                //await context.SaveChangesAsync();
-                //return true;
+                transaction.DeletedDateTime = DateTime.UtcNow;
+                await context.SaveChangesAsync();
+                return true;
             }
             catch
             {

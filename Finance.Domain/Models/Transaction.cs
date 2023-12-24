@@ -17,7 +17,7 @@ namespace Finance.Domain.Models
         public DateTime? DeletedDateTime { get; set; } = null;
         public decimal Amount { get; set; }
         public CurrencyEnum Currency { get; set; }
-        public AccountUser User { get; set; }
+        public AccountUser? User { get; set; }
         public long UserId { get; set; }    
     }
 }

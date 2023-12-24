@@ -39,6 +39,9 @@ namespace Finance.Infrastructure.EntityFramework
 
                 eb.Property(x => x.Amount)
                 .HasColumnType("decimal(18, 2)");
+
+                eb.HasIndex(t => t.DeletedDateTime);
+                eb.HasIndex(t => t.UserId);
             });
 
             modelBuilder.Entity<AccountUser>(b =>

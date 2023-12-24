@@ -23,7 +23,6 @@ namespace Finance.ApplicationCore.Commands
     {
         private readonly ICommandFinanceRepository repository;
         private readonly ILogger<DeleteTransactionByIdCommandHandler> logger;
-        private static readonly object deleteLock = new object();
 
         public DeleteTransactionByIdCommandHandler(ICommandFinanceRepository commandFinanceRepository, ILogger<DeleteTransactionByIdCommandHandler> _logger)
         {
@@ -31,22 +30,19 @@ namespace Finance.ApplicationCore.Commands
             this.logger = _logger;
         }
 
-        public async Task<bool> Handle (DeleteTransactionByIdCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(DeleteTransactionByIdCommand request, CancellationToken cancellationToken)
         {
             try
             {
                 bool result = true;
-                lock (deleteLock)
-                {
-                    result = repository.DeleteTranstacion(request.Id).Result;
-                }
+                result = repository.DeleteTranstacion(request.Id).Result;
 
-                if(result)
+                if (result)
                     logger.LogInformation($"Sucessfull delete transaction by id : {request.Id}");
 
                 return result;
             }
-            catch(Exception ex) 
+            catch (Exception ex)
             {
                 logger.LogError($"Problem in handler : {nameof(DeleteTransactionByIdCommandHandler)}. Details : {ex}");
                 throw;
