@@ -1,0 +1,20 @@
+version: '3'
+services:
+ finance_api:
+  image: finance-api
+  ports:
+   - "8080:80"
+  networks:
+   - mynetwork
+
+ ui_angular:
+  image: finance-ui
+  ports:
+   - "8081:80"
+  networks:
+   - mynetwork
+
+networks:
+   mynetwork:
+   driver: bridge
+   
