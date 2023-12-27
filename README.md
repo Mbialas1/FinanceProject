@@ -31,19 +31,19 @@
 To get started with the Finance Project, follow these steps:
 
 
-1.Connect to MSSQL Database:
+ - Connect to MSSQL Database:
 
 Connect to the MSSQL database using SQL Server Management Studio with 'SQL Server Auth.'
 Import the db.bacpac file (from the main folder) into the database.
 Name the database FinanceDB.
 Configure the database for Docker ([link](https://stackoverflow.com/questions/50166869/connect-to-sql-server-in-local-machine-host-from-docker-using-host-docker-inte)).
-2.Update Connection Strings:
+ - Update Connection Strings:
 
 Modify the connection string in both appsettings.json files with the appropriate login and password.
-3.Run Docker:
+ - Run Docker:
 
 Start Docker.
-4.Build Docker Images:
+ - Build Docker Images:
 
 Open PowerShell in Visual Studio and run the following commands:
 Build the backend image (docker build -t finance-api -f Dockerfile.FinanceAPI .).
