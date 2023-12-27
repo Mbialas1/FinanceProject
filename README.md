@@ -45,13 +45,12 @@ Modify the connection string in both appsettings.json files with the appropriate
 Start Docker.
  - Build Docker Images:
 
-Open PowerShell in Visual Studio and run the following commands:
+Open PowerShell in Visual Studio and run the following commands (You must be in main folder of project):
 Build the backend image (docker build -t finance-api -f Dockerfile.FinanceAPI .).
-Navigate to the Finance.UI folder (docker build -t finance-ui -f Dockerfile.FinanceUI .) and build the frontend image.
+Navigate to the Finance.UI folder (cd Finance.UI) (docker build -t finance-ui -f Dockerfile.FinanceUI .) and build the frontend image.
 Return to the main folder using "cd ..".
-Run Docker Compose:
+Run Docker Compose (docker-compose up -d).
 
-Run Docker Compose (Cdocker-compose up -d).
 Access the Application:
 
 Open your web browser and go to http://localhost:8081/.
