@@ -15,6 +15,9 @@
 
 ## Technologies Used
 
+- **DataBase:**
+   - MsSql
+
 - **Backend:**
   - 🛠️ .NET 6
   - 🔄 CQRS (Command Query Responsibility Segregation)
