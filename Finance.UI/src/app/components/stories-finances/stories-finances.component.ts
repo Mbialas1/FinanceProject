@@ -5,7 +5,7 @@ import { TransactionService } from '../../services/TransactionService';
 @Component({
   selector: 'app-stories-finances',
   templateUrl: './stories-finances.component.html',
-  styleUrl: './stories-finances.component.css'
+  styleUrls: ['./stories-finances.component.css']
 })
 export class StoriesFinancesComponent {
 

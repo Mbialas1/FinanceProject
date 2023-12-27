@@ -4,7 +4,7 @@ import { AccountService } from '../../services/AccountService';
 @Component({
   selector: 'app-account-balance',
   templateUrl: './account-balance.component.html',
-  styleUrl: './account-balance.component.css'
+  styleUrls: ['./account-balance.component.css']
 })
 export class AccountBalanceComponent {
   accountBalance!: string;

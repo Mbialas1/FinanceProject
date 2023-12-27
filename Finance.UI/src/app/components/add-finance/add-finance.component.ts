@@ -5,7 +5,7 @@ import { TransactionService } from '../../services/TransactionService';
 @Component({
   selector: 'app-add-finance',
   templateUrl: './add-finance.component.html',
-  styleUrl: './add-finance.component.css'
+  styleUrls: ['./add-finance.component.css']
 })
 export class AddFinanceComponent {
   financeForm!: FormGroup;
