@@ -26,6 +26,9 @@
 - **Frontend:**
   - 🅰 Angular
 
+- **Security:**
+  - JW Token
+
 - **Containerization:**
   - 🐳 Docker
 
