@@ -30,6 +30,7 @@
 
 To get started with the Finance Project, follow these steps:
 
+ - WITH DOCKER :
 
  - Connect to MSSQL Database:
 
@@ -54,3 +55,12 @@ Run Docker Compose (docker-compose up -d).
 Access the Application:
 
 Open your web browser and go to http://localhost:8081/.
+
+
+ - WITHOUT DOCKER :
+
+ - Import db.bacpac file (from the main folder) into the database. Warrning! If you want create your own/by ef core db add example user to AccountUsers table.
+ - change connection strings to your database
+ - In Program.cs (Finance-API project) change url in dependency AddCors
+ - Change url apiBaseUrl in enviroment.ts (Finance-UI project)
+ - Done! Run angular from visual code by ng serve and run api by visual studio.
